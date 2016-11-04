@@ -18,6 +18,7 @@ displayName = "SheetCommands"
 inputs = (
   ("Uses:\nFILEPATH\FILENAME.csv for a single file\nGOOGLESHEET_URL to load a google sheet\n*make sure the sheet is public","label"),
   ("csv_file", ("string","value=C:\\")),
+  ("                     - made by Komsjer\n                              - Komsjer@kpnmail.nl\n","label"),
 )
 
 def csv_from_url(url):
