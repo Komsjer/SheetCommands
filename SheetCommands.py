@@ -55,7 +55,7 @@ class SheetCommandsLoader:
         self.global_values = {}
         self.chain_values = []
         self.exceptions = {}
-        self.command_block = {"main":"Your sheet is missing a command chain."}
+        self.command_block = {"main":[{"COMMAND":"Your sheet is missing a command chain."}]}
 
         self.output = []
 
@@ -63,7 +63,7 @@ class SheetCommandsLoader:
         self.c = 5
         self.program = ["main"]
         
-        self.read(csv_filepath)
+        self.output = self.read(csv_filepath)
 
 
     def load_csv(self, csv_filepath):
@@ -78,16 +78,6 @@ class SheetCommandsLoader:
             return f
         else:
             raise Exception("Could not open: ",csv_filepath)
-
-            #full_path = os.path.realpath(__file__)
-            #path, filename = os.path.split(full_path)
-            #if not os.path.exists(path+"\.tmp"):
-            #    os.makedirs(path+"\.tmp")
-            #f = open(path+"\.tmp"+"\dialog.csv" ,"w")
-            #f.write(csv_file)
-            #f.close()
-
-            #csv_file = path+"\.tmp"+"\dialog.csv"
 
     def get_command_chain(self):
         return self.command_block["main"]
@@ -133,6 +123,10 @@ class SheetCommandsLoader:
             if operator == "RUN":
                 operator = self.next_program_step()
             print operator
+
+            if operator == "PARENT":
+                p_out = self.read(row[1])
+                output += p_out
             
             if operator == "PROGRAM":
                 _default_operator = "PROGRAMREAD"
@@ -161,6 +155,7 @@ class SheetCommandsLoader:
             elif operator == "START":
                 _is_reading = True
                 _reading_vars = row
+                self.programhead = 0
                 _default_operator = "RUN"
                 continue
             elif operator == "END":
@@ -192,16 +187,14 @@ class SheetCommandsLoader:
                 variables = self.read_row_to_var(_reading_vars, row)
                 output.append( self.output_chain(variables,operator))
                 continue
-        self.output = output
+        return output
         
                         
     def log(self):
         print "Generating {0} rows of commandblocks".format(self.chain_values)
 
     def format_command(self, row_vars, command_text):
-        #print command_text
         temp = lambda matchobj: self.get_var(matchobj.group(1), row_vars, just_value=True)
-        #print "CommandTEXT:", command_text
         command_text = re.sub(r"%([\s\S]*?)%",temp, command_text)
         return command_text
 
@@ -227,10 +220,8 @@ class SheetCommandsLoader:
                 other = op.replace("*split=", "", 1)
                 sep_vars = var[var_name].split(other)
                 var.update({str(_base_var_name)+str(n+1):new_var for n,new_var in enumerate(sep_vars)})
-                #print "!Line_green_ *split=/", row_vars["Line_green_ *split=/"]
                 
         if just_value : return var[var_name]
-        #if "Line_green_ *split=/" in var_name :print "Line_green_ *split=/", var, row_vars
         return var
 
     def resolve(self,data):
@@ -248,7 +239,6 @@ class SheetCommandsLoader:
                 variables[e[0]] = e[1]
         return variables
             
-        
 
     def get_full_data(self, row_vars, base={}):
         new_data_h = {}
@@ -315,35 +305,9 @@ def perform(level, box, options):
     csv_file = options["csv_file"]
 
     #--Run
-
     dialog = SheetCommandsLoader(csv_file)
     schematic = MCSchematic(dialog.get_dimensions(), mats=level.materials)
     generate(dialog,schematic)
-
-    ##Single File
-##    if os.path.isfile(csv_file) and csv_file.endswith(".csv"):
-##        print "--PARSING SINGLE FILE--"
-##        dialog = MCDialog(csv_file)
-##        dialog.log()
-##        schematic = MCSchematic(calculate_schematic_size([dialog]), mats=level.materials)
-##        generate_track(dialog,schematic,indicator_wool=indicator_wool)
-
-    ##Folder
-##    elif os.path.isdir(csv_file):
-##        print "--PARSING FOLDER--"
-##        files = [f for f in os.listdir(csv_file) if f.endswith('.csv')]
-##        for x in files: print x
-##        dialogs = [MCDialog(csv_file+"\\"+f) for f in files]
-##        schematic = MCSchematic(calculate_schematic_size(dialogs), mats=level.materials)
-##        for j,dialog in enumerate(dialogs):
-##            generate_track(dialog,schematic,y=j*2 , indicator_wool=indicator_wool)
-##        if len(dialogs) == 0:
-##            raise(Exception("No file with extention .csv found in"+csv_file ))
-    ##URL
-
-
-        #generate_track(dialog,schematic,indicator_wool=indicator_wool)
-
 
     #Copies the schematic to the editor, taken from code by TexelElf
     editor.addCopiedSchematic(schematic)
