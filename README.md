@@ -6,11 +6,11 @@
 - Runs the next iteration of the program
 
 ####PROGRAM
-- empties the program
+- empties the program array
 - sets the default operand to PROGRAMREAD
 
 ####PROGRAMREAD
-- reads row[1] to the 
+- reads row[1] to the program array
 
 ####PROGRAMEND
 - sets the default operand to IGNORE
