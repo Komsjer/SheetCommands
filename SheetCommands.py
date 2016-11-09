@@ -198,7 +198,6 @@ class SheetCommandsLoader:
         temp = lambda matchobj: self.get_var(matchobj.group(1), row_vars, just_value=True)
         command_text = re.sub(r"%([\s\S]*?)%",temp, command_text)
         return command_text
-
         
 
     def get_var(self, var_name, row_vars=None,ignore_link=False,just_value=False):
@@ -223,6 +222,10 @@ class SheetCommandsLoader:
                 var.update({str(_base_var_name)+str(n+1):new_var for n,new_var in enumerate(sep_vars)})
                 
         if just_value : return var[var_name]
+
+        ##EVAL all variables with Eval token
+        for v in var:
+            var[v] = self.format_command(row_vars, var[v])
         return var
 
     def resolve(self,data):
@@ -245,22 +248,19 @@ class SheetCommandsLoader:
         new_data_h = {}
         # Base needed variables TODO MOVE TO GLOBAL PRE SET
         new_data_h.update(base)
-        new_data_h.update(self.resolve(new_data_h))
         # global based variables
         new_data_h.update(self.global_values)
-        new_data_h.update(self.resolve(new_data_h))
         # Row based variables
         new_data_h.update(row_vars)
-        new_data_h.update(self.resolve(new_data_h))
         # Exception varialbes
         if "EXCEPTION" in new_data_h:
             if new_data_h["EXCEPTION"] != "":
                 new_data_h.update(self.vars_from_exceptions(new_data_h["EXCEPTION"]))
-                new_data_h.update(self.resolve(new_data_h))
+                #new_data_h.update(self.resolve(new_data_h))
                 if new_data_h["ID"] == "19":
                     print "EXCEPTION: ",new_data_h["EXCEPTION"]
             
-        
+        new_data_h.update(self.resolve(new_data_h))
         return new_data_h
 
     def output_chain(self, row_vars, command_chain_name = "main"):
@@ -269,7 +269,7 @@ class SheetCommandsLoader:
         base = {"BLOCKID":"137", "COMMAND":"", "META":"5", "ISAUTO":"FALSE"}
         for link in command_chain: ##TODO add row_vars to link so a row can edit the command
             link.update(row_vars)
-            data = self.get_full_data(link,base)
+            data = self.get_full_data(link,base) ##TODO Move outside and put low priority on link but still update
             #print "Line_green_1" in data
             resolved_chain.append({"BLOCKID":data["BLOCKID"], "COMMAND":self.format_command(data,data["COMMAND"]), "META":data["META"], "ISAUTO":data["ISAUTO"]})
             #print t["COMMAND"]
@@ -282,7 +282,8 @@ def generate(dialog, schematic):
     y = 0
     for z, row in enumerate(dialog.output):
         if row == "BLANK":
-            print "BLANK"
+            pass
+            #print "BLANK"
         elif type(row) == list:
             for x, command_data in enumerate(row):
                 if type(command_data) == dict:
@@ -293,7 +294,7 @@ def generate(dialog, schematic):
                     schematic.setBlockAt(x,y,z,BLOCKID)
                     schematic.setBlockDataAt(x,y,z, META)
                     schematic.TileEntities.append(CommandBlock(x,y,z,COMMAND,ISAUTO))
-                    print BLOCKID,COMMAND,META,ISAUTO
+                    #print BLOCKID,COMMAND,META,ISAUTO
         
         
 
