@@ -83,7 +83,7 @@
 ####LOCAL
 - sets the succeeding row values as local variable names
 
-####HAULT
+####HALT
 - stops reading anything afther this
 
 ####NEWLINE
