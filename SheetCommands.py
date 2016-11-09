@@ -208,6 +208,12 @@ class SheetCommandsLoader:
             var[var_name] = row_vars[var_name]
         else:
             print "!UNKNOWN VARIABLE REQUESTED: \""+str(var_name)+"\""
+                
+        if just_value : return var[var_name]
+
+        ##EVAL all variables with Eval token
+        for v in var:
+            var[v] = self.format_command(row_vars, var[v])
         ## special name opperands
 
         _base_var_name = ""
@@ -219,13 +225,9 @@ class SheetCommandsLoader:
             if op.startswith("*split=") : # split the variable and assign it to _base_var_name+n
                 other = op.replace("*split=", "", 1)
                 sep_vars = var[var_name].split(other)
+                #print sep_vars
                 var.update({str(_base_var_name)+str(n+1):new_var for n,new_var in enumerate(sep_vars)})
-                
-        if just_value : return var[var_name]
-
-        ##EVAL all variables with Eval token
-        for v in var:
-            var[v] = self.format_command(row_vars, var[v])
+                if var_name == "Line_red_ *split=/": print var
         return var
 
     def resolve(self,data):
@@ -261,6 +263,10 @@ class SheetCommandsLoader:
                     print "EXCEPTION: ",new_data_h["EXCEPTION"]
             
         new_data_h.update(self.resolve(new_data_h))
+        if "Line_red_ *split=/" in new_data_h:
+            print new_data_h["Line_red_ *split=/"]
+            if "Line_red_1" in new_data_h:
+                print new_data_h["Line_red_1"]
         return new_data_h
 
     def output_chain(self, row_vars, command_chain_name = "main"):
