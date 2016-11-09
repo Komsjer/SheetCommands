@@ -82,3 +82,9 @@
 
 ####LOCAL
 - sets the succeeding row values as local variable names
+
+####HAULT
+- stops reading anything afther this
+
+####NEWLINE
+- Stacks the commandblocks into a new line
