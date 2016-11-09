@@ -149,7 +149,7 @@ class SheetCommandsLoader:
             elif operator == "COMMANDSEND":
                 block_name = row[1].lower() if row[1].lower() != "" else "main"
                 self.command_block.update({block_name :_command_chain})
-                print "LOADED COMMAND CHAIN: ",row[1].lower() ,":",_command_chain
+                print "LOADED COMMAND CHAIN: ",row[1] ,":",_command_chain
                 _command_vars = []
                 _command_chain = []
                 continue
