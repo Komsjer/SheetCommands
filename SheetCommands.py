@@ -200,20 +200,24 @@ class SheetCommandsLoader:
         return command_text
         
 
-    def get_var(self, var_name, row_vars=None,ignore_link=False,just_value=False):
+    def get_var(self, var_name, row_vars=None,ignore_link=False,just_value=False, soft=False):
         ## Use Ignore link for command! TODO
         ## TODO add a *IGNORE for row_vars so it can grab the global value
         var = {var_name:""}
         if var_name in row_vars:
             var[var_name] = row_vars[var_name]
         else:
-            print "!UNKNOWN VARIABLE REQUESTED: \""+str(var_name)+"\""
+            if soft:
+                return {}
+            else:
+                print "!UNKNOWN VARIABLE REQUESTED: \""+str(var_name)+"\""
                 
         if just_value : return var[var_name]
 
         ##EVAL all variables with Eval token
-        for v in var:
-            var[v] = self.format_command(row_vars, var[v])
+        if not soft:
+            for v in var:
+                var[v] = self.format_command(row_vars, var[v])
         ## special name opperands
 
         _base_var_name = ""
@@ -226,12 +230,16 @@ class SheetCommandsLoader:
                 other = op.replace("*split=", "", 1)
                 sep_vars = var[var_name].split(other)
                 var.update({str(_base_var_name)+str(n+1):new_var for n,new_var in enumerate(sep_vars)})
+                print var
         return var
 
-    def resolve(self,data):
+    def resolve(self,data, soft = False):
         new_data_h={}
         for key in data.keys():
-            new_data_h.update(self.get_var(key,data))
+            new_data_h.update(self.get_var(key,data, soft=soft))
+##            if "Line_green_ *split=/" in new_data_h:
+##                if "Line_green_1" in new_data_h:
+##                    print new_data_h["Line_green_1"]
         return new_data_h
 
     def vars_from_exceptions(self, exceptions):
@@ -251,7 +259,9 @@ class SheetCommandsLoader:
         # global based variables
         new_data_h.update(self.global_values)
         # Row based variables
+        row_vars_soft_r = self.resolve(row_vars, True)
         new_data_h.update(row_vars)
+        new_data_h.update(row_vars_soft_r)
         # Exception varialbes
         if "EXCEPTION" in new_data_h:
             if new_data_h["EXCEPTION"] != "":
