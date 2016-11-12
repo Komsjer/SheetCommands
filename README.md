@@ -88,3 +88,12 @@
 
 ####NEWLINE
 - Stacks the commandblocks into a new line
+
+####CONDITION
+- a way to call different functions based on contidions
+
+####DEFCONDITION *maybe
+- write your own conditional
+
+####DEFLINEREADER *maybe
+- write your own linereader to output machine thingy!
