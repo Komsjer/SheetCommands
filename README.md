@@ -83,6 +83,9 @@
 ####HALT
 - stops reading anything afther this
 
+####REPEAT [target]
+- sets the default operand to [target]
+
 ####NEWLINE
 - Stacks the commandblocks into a new line
 
