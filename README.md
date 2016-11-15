@@ -61,9 +61,9 @@
 
 ##Planned opperands
 
-####GOTO [N]
-- moves the readhead of the function to a different location
-- reads that line with the program found at program[N]
+####GOTO [N] [readline=true]
+- moves the readhead of the function to a location [N]
+- if readline: reads that line with the program found at program[N]
 
 ####FILTER
 - sets the succeeding row values as filter variable names
@@ -77,9 +77,6 @@
 - sets the value to replace the -from- instances of the given variable with
 - sets the default operand to IGNORE
 
-####MOVETO [N]
-- moves the readhead of the function to a different location
-
 ####LOCAL
 - sets the succeeding row values as local variable names
 
@@ -89,11 +86,21 @@
 ####NEWLINE
 - Stacks the commandblocks into a new line
 
-####CONDITION
+####DEFLINEREADER
+- write your own linereader
+- where row[1] is the linereaderName
+- where row[2] is the target function name
+- where row[3] is the line reader function
+
+####LINEREADER [linereaderName]
+- calls [linereaderName] for that line
+
+
+
+####CONDITION [condition name] {parm1} {...} {parmN} *maybe
 - a way to call different functions based on contidions
 
 ####DEFCONDITION *maybe
 - write your own conditional
 
-####DEFLINEREADER *maybe
-- write your own linereader to output machine thingy!
+
