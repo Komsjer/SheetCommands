@@ -61,7 +61,7 @@
 
 ##Planned opperands
 
-####GOTO [N] [readline=true]
+####GOTO [N=0] [readline=true]
 - moves the readhead of the function to a location [N]
 - if readline: reads that line with the program found at program[N]
 
