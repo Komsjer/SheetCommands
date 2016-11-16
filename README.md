@@ -2,7 +2,9 @@
 
 SheetCommands is an MCEdit filter made for turning csv data into commandblock chains. Its aim is to make large scale commandblock setups managable. Aswell as provide easy to use yet versatile tools to allow the user to both employ rapid prototyping aswell as beeing able to easily share their creations with others. 
 
-SheetCommands can load csv data straight from googlesheet links. In wich a refrence guide can be found [here](https://docs.google.com/spreadsheets/d/1ylzSjWcWe-uwC6NFYCk3W4kxFod8NVA_7ZvtQkXue8k/edit#gid=0 "Basics Sheet")
+SheetCommands can load csv data straight from googlesheet links. aswell as .csv files
+
+[-RefrenceGuide-](https://docs.google.com/spreadsheets/d/1ylzSjWcWe-uwC6NFYCk3W4kxFod8NVA_7ZvtQkXue8k/edit#gid=0 "Basics Sheet")
 
 
 ##Operands:
