@@ -77,14 +77,14 @@
 - sets the value to replace the -from- instances of the given variable with
 - sets the default operand to IGNORE
 
+####REPEAT [target]
+- sets the default operand to [target]
+
 ####LOCAL
 - sets the succeeding row values as local variable names
 
 ####HALT
 - stops reading anything afther this
-
-####REPEAT [target]
-- sets the default operand to [target]
 
 ####NEWLINE
 - Stacks the commandblocks into a new line
