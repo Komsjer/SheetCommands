@@ -61,7 +61,7 @@ SheetCommands can load csv data straight from googlesheet links. In wich a refre
 - adds all the rows found in the file specified into itself
 - it reads row[1] for the file location
 
-####[commandchain name]
+####[commandchain name] [-Sheet-] (https://docs.google.com/spreadsheets/d/1ylzSjWcWe-uwC6NFYCk3W4kxFod8NVA_7ZvtQkXue8k/edit#gid=1089643559 "Commands Sheet")
 - runs this commandchain and adds it to the output using the succeeding local variables with their respective names.
 
 ####GOTO [N=0] [readline=true] [-Sheet-] (https://docs.google.com/spreadsheets/d/1ylzSjWcWe-uwC6NFYCk3W4kxFod8NVA_7ZvtQkXue8k/edit#gid=907582265 "Goto  Sheet")
