@@ -103,3 +103,8 @@ SheetCommands can load csv data straight from googlesheet links. aswell as .csv 
 ####LINEREADER [linereaderName]
 - calls [linereaderName] for that line
 
+##Other Sheets:
+
+####EXCEPTION [-Sheet-] [-Sheet-] (https://docs.google.com/spreadsheets/d/1ylzSjWcWe-uwC6NFYCk3W4kxFod8NVA_7ZvtQkXue8k/edit#gid=770940968 "Exception  Sheet")
+
+####DATA SPLITTING [-Sheet-] [-Sheet-] (https://docs.google.com/spreadsheets/d/1ylzSjWcWe-uwC6NFYCk3W4kxFod8NVA_7ZvtQkXue8k/edit#gid=563084852 "Splitting  Sheet")
